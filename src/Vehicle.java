@@ -14,9 +14,8 @@ public class Vehicle extends Thread{
             System.out.println(getName()+" arriba al pont");
             pont.arribar(this);
             //Simulació de temps creuant el pont
-            System.out.println(getName()+" travesa el pont");
             try {
-                Thread.sleep(2000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -25,7 +24,7 @@ public class Vehicle extends Thread{
             //Simulació del vehicle allunyant-se del pont per deixar un marge de temps
             System.out.println(getName()+" s'allunya del pont");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(7000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
