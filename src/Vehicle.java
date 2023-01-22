@@ -1,6 +1,6 @@
 public class Vehicle extends Thread{
-    private Pont.Sentit sentit;
-    private Pont pont;
+    private final Pont.Sentit sentit;
+    private final Pont pont;
     private boolean creuant;
 
     public Vehicle(String name, Pont.Sentit sentit, Pont pont) {
