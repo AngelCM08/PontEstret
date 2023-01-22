@@ -3,7 +3,6 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         Pont pont = new Pont();
-
         Vehicle[] vehicles = new Vehicle[10];
 
         for (int i = 0, j = 1; i < 10; i=i+2, j++) {

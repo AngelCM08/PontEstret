@@ -1,11 +1,13 @@
 public class Vehicle extends Thread{
     private Pont.Sentit sentit;
     private Pont pont;
+    private boolean creuant;
 
     public Vehicle(String name, Pont.Sentit sentit, Pont pont) {
         setName(name);
         this.sentit = sentit;
         this.pont = pont;
+        creuant = false;
     }
 
     @Override
@@ -19,7 +21,7 @@ public class Vehicle extends Thread{
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            pont.sortir(getName());
+            pont.sortir(this);
 
             //Simulació del vehicle allunyant-se del pont per deixar un marge de temps
             System.out.println(getName()+" s'allunya del pont");
@@ -29,6 +31,14 @@ public class Vehicle extends Thread{
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public boolean isCreuant() {
+        return creuant;
+    }
+
+    public void setCreuant(boolean creuant) {
+        this.creuant = creuant;
     }
 
     public Pont.Sentit getSentit() {

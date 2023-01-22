@@ -19,16 +19,17 @@ public class Pont {
 
     public synchronized void arribar(Vehicle vehicle) {
         while(true) {
-            if(stop){
+            if(stop && !vehicle.isCreuant()){
                 try {
-                    System.out.println("Esperant a que els vehicles buidin el pont...");
-                    Thread.sleep(5000);
+                    System.out.println(vehicle.getName()+" Esperant a que els vehicles buidin el pont...");
+                    wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }else{
                 if(capacitat == 0){
                     this.sentit = vehicle.getSentit();
+                    vehicle.setCreuant(true);
                     System.out.println("*************************+");
                     System.out.println(this.sentit);
                     System.out.println("*************************+");
@@ -39,6 +40,7 @@ public class Pont {
                     notifyAll();
                     break;
                 } else if (vehicle.getSentit().equals(this.sentit) && capacitat < MAX_CAPACITAT) {
+                    vehicle.setCreuant(true);
                     vehicles_han_travesat++;
                     System.out.println(vehicle.getName()+" travesa el pont");
                     System.out.println("Vehícles que han travessant el pont en la mateixa direcció: "+vehicles_han_travesat);
@@ -56,25 +58,20 @@ public class Pont {
         }
     }
 
-    public synchronized void sortir(String name) {
+    public synchronized void sortir(Vehicle vehicle) {
         if(vehicles_han_travesat == MAX_FINS_CANVI_SENTIT){
             stop = true;
             vehicles_han_travesat = 0;
             if(sentit.equals(Sentit.DRETA)) sentit = Sentit.ESQUERRA;
             else sentit = Sentit.DRETA;
-            System.out.println("\n***** CANVI DE SENTIT *****");
+            System.out.println("\n***** CANVI DE SENTIT FORÇAT *****");
         }else{
-            if(stop && capacitat == 1){
-                capacitat--;
-                stop = false;
-            }else if(capacitat == 1){
-                capacitat--;
-                sentit = null;
-            }else{
-                capacitat--;
-            }
-            System.out.println("Surt "+name);
+            if(stop && capacitat == 1) stop = false;
+            else if(capacitat == 1) sentit = null;
+            System.out.println("Surt "+vehicle.getName());
         }
+        capacitat--;
+        vehicle.setCreuant(false);
         notifyAll();
     }
 
